@@ -18,11 +18,11 @@ import lombok.ToString;
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Title {
-	/**　作品ID */
+	/** 作品ID */
 	@JsonProperty("title_cd")
-    private String titleCd;
-	
+	private String titleCd;
+
 	/** 作品名 */
 	@JsonProperty("title_nm")
-    private String titleNm;
+	private String titleNm;
 }

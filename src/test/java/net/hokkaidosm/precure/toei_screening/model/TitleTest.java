@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public class TitleTest {
+	//@formatter:off
     String testJson = "{\n"
     		+ "  \"title_cd\": \"02846\",\n"
     		+ "  \"title_nm\": \"映画トロピカル～ジュ！プリキュア 雪のプリンセスと奇跡の指輪！\",\n"
@@ -23,12 +24,13 @@ public class TitleTest {
     		+ "  \"title_poster_url\": \"https://bookingsystemdevelopment.blob.core.windows.net/poster/002f7e57-842f-4d9c-9ec3-d3889e0de8af.jpg\",\n"
     		+ "  \"barrierfree_icons\": []\n"
     		+ "}";
-    
-    @Test
-    public void test() throws Exception {
-    	ObjectMapper mapper = new ObjectMapper();
-    	Title actual = mapper.readValue(testJson, Title.class);
-    	assertEquals("02846", actual.getTitleCd());
-    	assertEquals("映画トロピカル～ジュ！プリキュア 雪のプリンセスと奇跡の指輪！", actual.getTitleNm());
-    }
+    //@formatter:on
+
+	@Test
+	public void test() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		Title actual = mapper.readValue(testJson, Title.class);
+		assertEquals("02846", actual.getTitleCd());
+		assertEquals("映画トロピカル～ジュ！プリキュア 雪のプリンセスと奇跡の指輪！", actual.getTitleNm());
+	}
 }
