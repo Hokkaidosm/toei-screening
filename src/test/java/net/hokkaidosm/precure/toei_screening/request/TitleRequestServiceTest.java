@@ -62,7 +62,6 @@ public class TitleRequestServiceTest {
 		try {
 			actual = service.getTitle(titleCd);
 		} catch (JsonProcessingException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 
