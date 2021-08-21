@@ -1,0 +1,4 @@
+# 編集後application.propertiesにリネーム
+
+# 組み込みWebサーバを無効にする
+spring.main.web-application-type=none
