@@ -36,7 +36,7 @@ public class MainService {
 	@Autowired
 	private SaveTheaterService saveTheaterService;
 
-	public void run(String titleCd) {
+	public void run(String titleCd, List<String> prefCodeList) {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
 		Title title = null;
@@ -65,6 +65,16 @@ public class MainService {
 
 		// 差分を取る
 		List<Theater> diffTheaters = checkDiffTheaters(theaters, pastTheaters, theaterIds, pastTheaterIds);
+
+		// 都道府県コードでの絞り込み
+		if (!ObjectUtils.isEmpty(prefCodeList)) {
+			addedTheaters = addedTheaters.stream().filter(t -> prefCodeList.contains(t.getPrefecturesCd()))
+					.collect(Collectors.toList());
+			deletedTheaters = deletedTheaters.stream().filter(t -> prefCodeList.contains(t.getPrefecturesCd()))
+					.collect(Collectors.toList());
+			diffTheaters = diffTheaters.stream().filter(t -> prefCodeList.contains(t.getPrefecturesCd()))
+					.collect(Collectors.toList());
+		}
 
 		String mailBody = mailList(addedTheaters, deletedTheaters, diffTheaters);
 		if (!ObjectUtils.isEmpty(mailBody)) {
