@@ -2,3 +2,14 @@
 
 # 組み込みWebサーバを無効にする
 spring.main.web-application-type=none
+
+# メール設定
+spring.mail.host=yourhost.example
+spring.mail.port=587
+spring.mail.username=yourname@yourhost.example
+spring.mail.password=example
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+mail.mailFrom=yourname@yourhost.example
+mail.mailTo=yourname@yourhost.example

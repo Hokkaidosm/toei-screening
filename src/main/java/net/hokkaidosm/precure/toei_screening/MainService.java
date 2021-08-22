@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import net.hokkaidosm.precure.toei_screening.file.LoadPastTheaterService;
+import net.hokkaidosm.precure.toei_screening.file.SaveTheaterService;
+import net.hokkaidosm.precure.toei_screening.mail.SendMailService;
 import net.hokkaidosm.precure.toei_screening.model.Theater;
 import net.hokkaidosm.precure.toei_screening.model.Title;
 import net.hokkaidosm.precure.toei_screening.request.TheaterRequestService;
@@ -29,6 +31,10 @@ public class MainService {
 	private TheaterRequestService theaterRequestService;
 	@Autowired
 	private LoadPastTheaterService loadPastTheaterService;
+	@Autowired
+	private SendMailService sendMailService;
+	@Autowired
+	private SaveTheaterService saveTheaterService;
 
 	public void run(String titleCd) {
 		ObjectMapper mapper = new ObjectMapper();
@@ -46,7 +52,6 @@ public class MainService {
 			e.printStackTrace();
 		}
 		List<String> theaterIds = theaters.stream().map(t -> t.getTheaterCd()).collect(Collectors.toList());
-		System.out.println(title.getTitleNm());
 
 		// 前回のデータを確認する
 		List<Theater> pastTheaters = loadPastTheaterService.loadPastTheaters(titleCd);
@@ -62,7 +67,16 @@ public class MainService {
 		List<Theater> diffTheaters = checkDiffTheaters(theaters, pastTheaters, theaterIds, pastTheaterIds);
 
 		String mailBody = mailList(addedTheaters, deletedTheaters, diffTheaters);
-		System.out.println(mailBody);
+		if (!ObjectUtils.isEmpty(mailBody)) {
+			sendMailService.sendMail(title.getTitleNm(), mailBody);
+		}
+
+		// データを保存する
+		try {
+			saveTheaterService.saveTheaters(theaters, titleCd);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected List<Theater> checkAddedTheaters(List<Theater> theaters, List<String> pastTheaterIds) {
